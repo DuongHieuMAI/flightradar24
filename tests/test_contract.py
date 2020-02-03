@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/python3
 
 from .context import flightradar24
 
@@ -14,8 +15,13 @@ class ContractTestSuite(unittest.TestCase):
 
     @staticmethod
     def test_balance_json_with_proxy():
-        proxies = {'http': 'http://196.43.235.238:53281', 'https': 'https://196.43.235.238:53281'}
-        fr = flightradar24.Api(proxies=proxies)
+        from fake_useragent import UserAgent
+        ua = UserAgent()
+        user_agent = ua.random
+        from free_proxy import FreeProxy
+        proxy = FreeProxy(country_id='US', timeout=2.0, rand=True).get()        
+        proxies = {'https': 'https://{}'.format(proxy)}
+        fr = flightradar24.Api(proxies=proxies, user_agent=user_agent)
         fr.get_airports()
 
 

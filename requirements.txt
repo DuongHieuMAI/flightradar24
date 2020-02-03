@@ -2,3 +2,6 @@ pytest
 requests
 python-coveralls
 coverage
+pytest-cov
+fake-useragent
+free-proxy

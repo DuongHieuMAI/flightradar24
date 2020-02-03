@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/python3
+
 from .helpers import *
 import time
 
@@ -23,8 +25,9 @@ class Api:
         'flights': '/zones/fcgi/feed.js?faa=1&mlat=1&flarm=1&adsb=1&gnd=1&air=1&vehicles=1&estimated=1&gliders=1&stats=1&maxage=14400&airline=!'
     }
 
-    def __init__(self, proxies=None):
+    def __init__(self, proxies=None, user_agent=None):
         self.proxies = proxies
+        self.user_agent = user_agent
         response = api_request(self.balanceJsonUrl, self.proxies)
         tmp_weight = 0
         tmp_uri = None
@@ -35,18 +38,18 @@ class Api:
         self.balanceUrl = tmp_uri
 
     def get_airports(self):
-        return api_request(self.baseUrl + self.metaDataEndPoints['airports'], self.proxies)
+        return api_request(self.baseUrl + self.metaDataEndPoints['airports'], self.proxies, self.user_agent)
 
     def get_airlines(self):
-        return api_request(self.baseUrl + self.metaDataEndPoints['airlines'], self.proxies)
+        return api_request(self.baseUrl + self.metaDataEndPoints['airlines'], self.proxies, self.user_agent)
 
     def get_flights(self, airline):
         endpoint = self.liveDataUrl + self.realTimeDataEndPoints['flights'] + airline+'&_=' + str(time.time())
-        return api_request(endpoint, self.proxies)
+        return api_request(endpoint, self.proxies, self.user_agent)
 
     def get_flight(self, flight_id):
         endpoint = self.apiUrl + self.realTimeDataEndPoints['flight'] + flight_id
-        return api_request(endpoint, self.proxies)
+        return api_request(endpoint, self.proxies, self.user_agent)
 
     def get_zones(self):
-        return api_request(self.baseUrl + self.metaDataEndPoints['zones'], self.proxies)
+        return api_request(self.baseUrl + self.metaDataEndPoints['zones'], self.proxies, self.user_agent)
